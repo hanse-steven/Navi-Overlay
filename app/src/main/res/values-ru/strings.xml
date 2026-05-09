@@ -1,0 +1,244 @@
+<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="ru">
+    <string name="app_name">Navi Overlay</string>
+    <string name="app_subtitle">Музыка вместо навигации — чисто и без отвлекающих факторов.</string>
+    <string name="accessibility_description">Определяет, какое приложение сейчас открыто, чтобы показывать окно трека только поверх выбранного навигатора.</string>
+    <string name="notification_permission">Navi Overlay — уведомления музыки</string>
+    <string name="accessibility_permission">Navi Overlay — определение навигатора</string>
+    <string name="monitor_permission">Постоянный локальный мониторинг активного навигатора и музыки для показа overlay-окна трека на автомобильной магнитоле</string>
+
+    <!-- Statut Card -->
+    <string name="StatutCard_Title">Состояние</string>
+    <string name="StatutCard_Description">Короткая сводка по движку, разрешениям и активным приложениям.</string>
+
+    <!-- Main Card -->
+    <string name="MainCard_Title">Главное</string>
+    <string name="MainCard_Description">Быстрое включение приложения, основной режим показа и язык интерфейса.</string>
+    <string name="MainCard_EnableSwitch">Включить приложение</string>
+    <string name="MainCard_OnlyTriggerSwitch">Показывать только поверх выбранных приложений</string>
+
+    <!-- Apps Card -->
+    <string name="AppsCard_Title">Приложения</string>
+    <string name="AppsCard_Description">Выбор навигаторов и плееров вынесен в отдельные аккуратные списки.</string>
+    <string name="AppsCard_NavigationButton_Title">Приложения навигации</string>
+    <string name="AppsCard_NavigationButton_Description">Где показывать окно</string>
+    <string name="AppsCard_MusicButton_Title">Аудио приложения</string>
+    <string name="AppsCard_MusicButton_Description">Откуда брать название трека</string>
+
+    <!-- Settings Card -->
+    <string name="SettingsCard_Title">Настройки</string>
+    <string name="SettingsCard_Description">Все настройки окна, текста, цветов и дополнительных функций собраны в одном месте.</string>
+    <string name="SettingsCard_TextButton_Title">Настройки текста</string>
+    <string name="SettingsCard_TextButton_Description">Размер текста, шрифт и жирный шрифт</string>
+    <string name="SettingsCard_WindowButton_Title">Настройки окна</string>
+    <string name="SettingsCard_WindowButton_Description">Прозрачность, форма, отступы, время и положение</string>
+    <string name="SettingsCard_ColorButton_Title">Настройки цвета</string>
+    <string name="SettingsCard_ColorButton_Description">Цвет окна, рамки, кнопок и текста</string>
+    <string name="SettingsCard_ExtraButton_Title">Дополнительные функции</string>
+    <string name="SettingsCard_ExtraButton_Description">Управление музыкой, обложка, fixed mode и прочее</string>
+
+    <!-- Permissions Card -->
+    <string name="PermissionsCard_Title">Разрешения</string>
+    <string name="PermissionsCard_Description">Выдай все разрешения один раз, чтобы движок работал стабильно.</string>
+    <string name="PermissionsCard_Overlay_Title">Поверх окон</string>
+    <string name="PermissionsCard_Overlay_Description">Разрешить показ окна над навигатором</string>
+    <string name="PermissionsCard_Notification_Title">Доступ к уведомлениям</string>
+    <string name="PermissionsCard_Notification_Description">Нужен для MediaSession и уведомлений плееров</string>
+    <string name="PermissionsCard_AppNotif_Title">Уведомления приложения</string>
+    <string name="PermissionsCard_AppNotif_Description">Нужно только на Android 13+</string>
+    <string name="PermissionsCard_Accessibility_Title">Специальные возможности</string>
+    <string name="PermissionsCard_Accessibility_Description">Определяет, открыт ли навигатор на экране</string>
+    <string name="PermissionsCard_Usage_Title">История использования</string>
+    <string name="PermissionsCard_Usage_Description">Запасной способ определения активного приложения</string>
+
+    <!-- Diagnostics Card -->
+    <string name="DiagnosticsCard_Title">Диагностика</string>
+    <string name="DiagnosticsCard_Description">Короткая проверка, если окно не появляется.</string>
+    <string name="DiagnosticsCard_CheckApp_Title">Проверить активное приложение</string>
+    <string name="DiagnosticsCard_CheckApp_Description">Показать текущий пакет Android</string>
+    <string name="DiagnosticsCard_Recover_Title">Проверить и восстановить</string>
+    <string name="DiagnosticsCard_Recover_Description">Откроет нужные настройки только если правда есть проблема</string>
+    <string name="DiagnosticsCard_CopyReport_Title">Скопировать отчёт</string>
+    <string name="DiagnosticsCard_CopyReport_Description">Собрать статусы разрешений, навигатора и музыки</string>
+
+    <!-- App Dialog -->
+    <string name="AppDialog_Title_Nav">Приложения навигации</string>
+    <string name="AppDialog_Title_Audio">Аудио приложения</string>
+    <string name="AppDialog_Subtitle_Nav">Выбери приложения, поверх которых можно показывать окно.</string>
+    <string name="AppDialog_Subtitle_Audio">Выбери плееры, откуда брать название трека.</string>
+    <string name="AppDialog_SearchHint">Поиск по названию или пакету</string>
+    <string name="AppDialog_Popular_Nav">Яндекс + карты</string>
+    <string name="AppDialog_Popular_Audio">Популярные плееры</string>
+    <string name="AppDialog_Clear">Очистить</string>
+    <string name="AppDialog_ManualHint">Добавить пакет вручную</string>
+    <string name="AppDialog_Add">Добавить</string>
+    <string name="AppDialog_Done">Готово</string>
+    <string name="AppDialog_InvalidPackage">Введите packageName, например ru.yandex.music</string>
+
+    <!-- Render Apps -->
+    <string name="RenderApps_NothingFound">Ничего не найдено</string>
+
+    <!-- Load Apps -->
+    <string name="LoadApps_AddedManually">Добавлено вручную</string>
+
+    <!-- Text Dialog -->
+    <string name="TextDialog_Title">Настройки текста</string>
+    <string name="TextDialog_Description">Настройки текста применяются сразу. Здесь можно изменить размер и стиль текста.</string>
+    <string name="TextDialog_TextSize">Размер текста</string>
+    <string name="TextDialog_Bold">Жирный шрифт</string>
+    <string name="TextDialog_Shadow">Тень текста</string>
+    <string name="TextDialog_Font_Title">Шрифт окна</string>
+    <string name="TextDialog_Font_Description">Выбор шрифта из набора образцов</string>
+    <string name="TextDialog_Preview">Проверить окно</string>
+    <string name="TextDialog_Done">Готово</string>
+
+    <!-- Window Dialog -->
+    <string name="WindowDialog_Title">Настройки окна</string>
+    <string name="WindowDialog_Description">Настройки окна применяются сразу. Здесь собраны форма, время и положение overlay.</string>
+    <string name="WindowDialog_Alpha">Прозрачность окна</string>
+    <string name="WindowDialog_Corner">Скругление углов</string>
+    <string name="WindowDialog_Border">Толщина рамки окна</string>
+    <string name="WindowDialog_PaddingX">Горизонтальный отступ</string>
+    <string name="WindowDialog_PaddingY">Вертикальный отступ</string>
+    <string name="WindowDialog_DisplayTime">Время показа, сек. 0 = не скрывать</string>
+    <string name="WindowDialog_Position_Title">Положение окна</string>
+    <string name="WindowDialog_Position_Description">Выбор одного из стандартных положений окна</string>
+    <string name="WindowDialog_Preset_Title">Пресет дизайна</string>
+    <string name="WindowDialog_Preset_Description">Готовые стили формы и оформления overlay</string>
+    <string name="WindowDialog_Preview">Проверить окно</string>
+    <string name="WindowDialog_Done">Готово</string>
+
+    <!-- Color Dialog -->
+    <string name="ColorDialog_Title">Настройки цвета</string>
+    <string name="ColorDialog_Description">Цветовые настройки применяются сразу. Здесь собраны все цвета overlay.</string>
+    <string name="ColorDialog_Window_Title">Выбор цвета окна</string>
+    <string name="ColorDialog_Window_Description">Палитра фона окна</string>
+    <string name="ColorDialog_Border_Title">Цвет рамки окна</string>
+    <string name="ColorDialog_Border_Description">Палитра для контура overlay</string>
+    <string name="ColorDialog_Controls_Title">Цвет рамок кнопок</string>
+    <string name="ColorDialog_Controls_Description">Палитра для кнопок ⏮ ⏯ ⏭</string>
+    <string name="ColorDialog_Artist_Title">Цвет исполнителя</string>
+    <string name="ColorDialog_Artist_Description">Отдельный цвет для исполнителя</string>
+    <string name="ColorDialog_Track_Title">Цвет названия песни</string>
+    <string name="ColorDialog_Track_Description">Отдельный цвет для названия песни</string>
+    <string name="ColorDialog_Preview">Проверить окно</string>
+    <string name="ColorDialog_Done">Готово</string>
+
+    <!-- Extra Features Dialog -->
+    <string name="ExtraDialog_Title">Дополнительные функции</string>
+    <string name="ExtraDialog_Description">Включай только то, что реально нужно. Все функции применяются сразу.</string>
+    <string name="ExtraDialog_Controls">Кнопки управления музыкой в overlay</string>
+    <string name="ExtraDialog_SwipeTracks">Свайп по overlay: влево/вправо переключает треки</string>
+    <string name="ExtraDialog_Snap">Snap: магнит к краям и центру после перетаскивания</string>
+    <string name="ExtraDialog_VolumeDim">При изменении громкости временно приглушать окно</string>
+    <string name="ExtraDialog_Floating">Floating режим: показывать трек даже без навигатора</string>
+    <string name="ExtraDialog_AlbumArt">Показывать обложку в окне</string>
+    <string name="ExtraDialog_HideWithNav">Сворачивать окно вместе с навигацией</string>
+    <string name="ExtraDialog_FixedWindow">Фиксированный размер окна</string>
+    <string name="ExtraDialog_FixedWindow_Hint">Ширину окна можно зафиксировать и потом менять двумя пальцами, как при увеличении или уменьшении изображения.</string>
+    <string name="ExtraDialog_AlwaysShow">Показывать окно постоянно</string>
+    <string name="ExtraDialog_Preview">Проверить окно</string>
+    <string name="ExtraDialog_Done">Готово</string>
+
+    <!-- Color Picker Dialog -->
+    <string name="ColorPickerDialog_Description">Нажми на цвет — тестовое окно обновится сразу.</string>
+    <string name="ColorPickerDialog_Done">Готово</string>
+
+    <!-- Color Target Title -->
+    <string name="ColorTargetTitle_Artist">Цвет исполнителя</string>
+    <string name="ColorTargetTitle_Title">Цвет названия песни</string>
+    <string name="ColorTargetTitle_Window">Выбор цвета окна</string>
+
+    <!-- Border Color Dialog -->
+    <string name="BorderColorDialog_Controls_Title">Цвет рамок кнопок</string>
+    <string name="BorderColorDialog_Window_Title">Цвет рамки окна</string>
+    <string name="BorderColorDialog_Controls_Description">Выбери цвет контура кнопок управления. Изменение видно сразу.</string>
+    <string name="BorderColorDialog_Window_Description">Выбери цвет контура. Изменение видно сразу на тестовом окне.</string>
+    <string name="BorderColorDialog_Done">Готово</string>
+
+    <!-- Font Dialog -->
+    <string name="FontDialog_Title">Шрифт окна</string>
+    <string name="FontDialog_Description">Выбери шрифт по образцу. Изменение применяется сразу к overlay.</string>
+    <string name="FontDialog_Sample">Пример / Example — АБВ abc</string>
+    <string name="FontDialog_Hint_System">Системный шрифт Android</string>
+    <string name="FontDialog_Hint_Sample">Образец для overlay</string>
+    <string name="FontDialog_Hint_Selected">Выбранный шрифт overlay</string>
+    <string name="FontDialog_Done">Готово</string>
+
+    <!-- Position Dialog -->
+    <string name="PositionDialog_Title">Положение окна</string>
+    <string name="PositionDialog_Description">Выбери стандартное положение окна. Изменение применяется сразу.</string>
+    <string name="PositionDialog_TopLeft">Верх слева</string>
+    <string name="PositionDialog_TopCenter">Верх по центру</string>
+    <string name="PositionDialog_TopRight">Верх справа</string>
+    <string name="PositionDialog_Center">Центр</string>
+    <string name="PositionDialog_BottomLeft">Низ слева</string>
+    <string name="PositionDialog_BottomCenter">Низ по центру</string>
+    <string name="PositionDialog_BottomRight">Низ справа</string>
+    <string name="PositionDialog_Preview">Проверить окно</string>
+    <string name="PositionDialog_Done">Готово</string>
+
+    <!-- Design Preset Dialog -->
+    <string name="DesignPresetDialog_Title">Пресет дизайна</string>
+    <string name="DesignPresetDialog_Description">Выбери готовый стиль формы и оформления overlay. Изменение применяется сразу.</string>
+    <string name="DesignPresetDialog_Classic">Classic — как сейчас</string>
+    <string name="DesignPresetDialog_Minimal">Minimal — тонкая тёмная плашка</string>
+    <string name="DesignPresetDialog_Glass">Glass — плавные волны</string>
+    <string name="DesignPresetDialog_CarUI">Car UI — авто-стиль</string>
+    <string name="DesignPresetDialog_Soft">Soft — мягкая карточка</string>
+    <string name="DesignPresetDialog_Contrast">Contrast — контрастный стиль</string>
+    <string name="DesignPresetDialog_Capsule">Capsule — капсульная форма</string>
+    <string name="DesignPresetDialog_Premium">Premium — плотный тёмный стиль</string>
+    <string name="DesignPresetDialog_Spikes">Spikes — шипы</string>
+    <string name="DesignPresetDialog_Orbit">Orbit — круглый стиль</string>
+    <string name="DesignPresetDialog_Preview">Проверить окно</string>
+    <string name="DesignPresetDialog_Done">Готово</string>
+
+    <!-- Diagnostics -->
+    <string name="Diagnostics_Copied">Диагностика скопирована</string>
+
+    <!-- Status -->
+    <string name="Status_Label_Status">Статус: </string>
+    <string name="Status_Label_Permissions">Разрешения: </string>
+    <string name="Status_Label_Navigator">Навигатор: </string>
+    <string name="Status_Label_Music">Музыка: </string>
+    <string name="Status_Label_AccessibilityService">Сервис спец. возможностей: </string>
+    <string name="Status_Enabled">Включено</string>
+    <string name="Status_Disabled">Выключено</string>
+    <string name="Status_Permissions_Granted">Выданы</string>
+    <string name="Status_Permissions_NotAll">Выданы не все</string>
+    <string name="Status_Running">Запущен</string>
+    <string name="Status_No">Нет</string>
+    <string name="Status_NoConnection">Нет связи</string>
+
+    <!-- Recover -->
+    <string name="Recover_EnableFirst">Сначала включи приложение</string>
+    <string name="Recover_AccessibilityOff">Спец. возможности выключены. Открой и снова включи Navi Overlay.</string>
+    <string name="Recover_UsageAccessRequired">Нужен доступ к истории использования.</string>
+    <string name="Recover_AccessibilityNotResponding">Служба спец. возможностей включена, но не отвечает. Открой этот экран и переподключи Navi Overlay.</string>
+    <string name="Recover_NoProblems">Движок перепроверен. Критичных проблем не найдено.</string>
+
+    <!-- Post notifications -->
+    <string name="PostNotif_NotRequired">На Android 12 и ниже отдельное разрешение уведомлений не требуется</string>
+    <string name="PostNotif_OpenFailed">Не удалось открыть настройки уведомлений</string>
+
+    <!-- ForegroundDetector -->
+    <string name="ForegroundDetector_Accessibility">Accessibility</string>
+    <string name="ForegroundDetector_UsageStats">UsageStats</string>
+    <string name="ForegroundDetector_LastNav">LastNav</string>
+    <string name="ForegroundDetector_NoData">нет данных</string>
+    <string name="ForegroundDetector_None">нет</string>
+
+    <!-- AppStateDetector -->
+    <string name="AppStateDetector_FilterDisabled">Фильтр навигатора выключен</string>
+    <string name="AppStateDetector_NavOnScreen">Навигатор на экране</string>
+    <string name="AppStateDetector_NavViaUsage">Навигатор определён через UsageStats</string>
+    <string name="AppStateDetector_NavViaUsageAccOff">Навигатор определён через UsageStats, Accessibility выключен</string>
+    <string name="AppStateDetector_TransientWindow">Временное системное окно поверх навигатора</string>
+    <string name="AppStateDetector_OtherAppOpen">Открыто другое приложение</string>
+    <string name="AppStateDetector_NavMinimized">Навигатор свернут, на экране другое приложение</string>
+    <string name="AppStateDetector_UsageShowsOther">UsageStats показывает другое приложение</string>
+    <string name="AppStateDetector_AccTempNoData">Accessibility временно без данных, используем последний навигатор</string>
+    <string name="AppStateDetector_AccOffUseLast">Accessibility выключен, используем последний навигатор</string>
+    <string name="AppStateDetector_AccDisabled">Спец. возможности выключены — навигатор определяется нестабильно</string>
+    <string name="AppStateDetector_NavNotOnScreen">Навигатор не на экране</string>
+</resources>

@@ -1,0 +1,246 @@
+<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="fr">
+    <string name="app_name">Navi Overlay</string>
+    <string name="app_subtitle">Musique sur la navigation — propre et sans distraction</string>
+    <string name="accessibility_description">Détermine quelle application est actuellement ouverte afin d\'afficher la fenêtre de piste uniquement par-dessus le navigateur sélectionné.</string>
+    <string name="notification_permission">Navi Overlay — Notifications musicales</string>
+    <string name="accessibility_permission">Navi Overlay — Définition du navigateur</string>
+    <string name="monitor_permission">Surveillance locale continue de la navigation et de la musique actives pour afficher une fenêtre de piste en superposition sur l\'autoradio</string>
+
+    <!-- Carte Statut -->
+    <string name="StatutCard_Title">Statut</string>
+    <string name="StatutCard_Description">Un bref résumé du moteur, des autorisations et des applications actives.</string>
+
+    <!-- Carte Principale -->
+    <string name="MainCard_Title">Principal</string>
+    <string name="MainCard_Description">Activation rapide de l\'application, mode d\'affichage principal et langue de l\'interface.</string>
+    <string name="MainCard_EnableSwitch">Activer l\'application</string>
+    <string name="MainCard_OnlyTriggerSwitch">Afficher uniquement sur les applications sélectionnées</string>
+    <string name="MainCard_EnglishUI" translatable="false">English UI</string>
+
+    <!-- Carte Applications -->
+    <string name="AppsCard_Title">Applications</string>
+    <string name="AppsCard_Description">Choisissez les applications de navigation et les lecteurs de musique dans des listes distinctes.</string>
+    <string name="AppsCard_NavigationButton_Title">Applications de navigation</string>
+    <string name="AppsCard_NavigationButton_Description">Où la fenêtre peut apparaître</string>
+    <string name="AppsCard_MusicButton_Title">Applications audio</string>
+    <string name="AppsCard_MusicButton_Description">D\'où proviennent les données de piste</string>
+
+    <!-- Carte Paramètres -->
+    <string name="SettingsCard_Title">Paramètres</string>
+    <string name="SettingsCard_Description">Tous les paramètres de fenêtre, texte, couleur et fonctionnalités supplémentaires sont regroupés au même endroit.</string>
+    <string name="SettingsCard_TextButton_Title">Paramètres de texte</string>
+    <string name="SettingsCard_TextButton_Description">Taille du texte, police et texte en gras</string>
+    <string name="SettingsCard_WindowButton_Title">Paramètres de la fenêtre</string>
+    <string name="SettingsCard_WindowButton_Description">Transparence, forme, décalages, durée et position</string>
+    <string name="SettingsCard_ColorButton_Title">Paramètres de couleur</string>
+    <string name="SettingsCard_ColorButton_Description">Couleurs de la fenêtre, des bordures, des contrôles et du texte</string>
+    <string name="SettingsCard_ExtraButton_Title">Fonctionnalités supplémentaires</string>
+    <string name="SettingsCard_ExtraButton_Description">Contrôles musicaux, pochette d\'album, mode fixe et plus encore</string>
+
+    <!-- Carte Autorisations -->
+    <string name="PermissionsCard_Title">Autorisations</string>
+    <string name="PermissionsCard_Description">Accordez les autorisations une seule fois pour que le moteur fonctionne de manière fiable.</string>
+    <string name="PermissionsCard_Overlay_Title">Dessiner par-dessus les applications</string>
+    <string name="PermissionsCard_Overlay_Description">Autoriser la fenêtre au-dessus des applications de navigation</string>
+    <string name="PermissionsCard_Notification_Title">Accès aux notifications</string>
+    <string name="PermissionsCard_Notification_Description">Nécessaire pour MediaSession et les notifications du lecteur</string>
+    <string name="PermissionsCard_AppNotif_Title">Notifications de l\'application</string>
+    <string name="PermissionsCard_AppNotif_Description">Nécessaire uniquement sur Android 13+</string>
+    <string name="PermissionsCard_Accessibility_Title">Accessibilité</string>
+    <string name="PermissionsCard_Accessibility_Description">Détecte si la navigation est à l\'écran</string>
+    <string name="PermissionsCard_Usage_Title">Accès à l\'utilisation</string>
+    <string name="PermissionsCard_Usage_Description">Méthode de secours pour détecter l\'application active</string>
+
+    <!-- Carte Diagnostics -->
+    <string name="DiagnosticsCard_Title">Diagnostics</string>
+    <string name="DiagnosticsCard_Description">Vérifications rapides si la fenêtre n\'apparaît pas.</string>
+    <string name="DiagnosticsCard_CheckApp_Title">Vérifier l\'application active</string>
+    <string name="DiagnosticsCard_CheckApp_Description">Afficher le package Android actuel</string>
+    <string name="DiagnosticsCard_Recover_Title">Vérifier et restaurer</string>
+    <string name="DiagnosticsCard_Recover_Description">Ouvre les paramètres nécessaires uniquement en cas de problème réel</string>
+    <string name="DiagnosticsCard_CopyReport_Title">Copier le rapport</string>
+    <string name="DiagnosticsCard_CopyReport_Description">Recueillir le statut des autorisations, du navigateur et de la musique</string>
+
+    <!-- Boîte de dialogue Apps -->
+    <string name="AppDialog_Title_Nav">Applications de navigation</string>
+    <string name="AppDialog_Title_Audio">Applications audio</string>
+    <string name="AppDialog_Subtitle_Nav">Choisissez les applications sur lesquelles la fenêtre peut apparaître.</string>
+    <string name="AppDialog_Subtitle_Audio">Choisissez les lecteurs utilisés pour les métadonnées de piste.</string>
+    <string name="AppDialog_SearchHint">Rechercher par nom ou package</string>
+    <string name="AppDialog_Popular_Nav">Yandex + cartes</string>
+    <string name="AppDialog_Popular_Audio">Lecteurs populaires</string>
+    <string name="AppDialog_Clear">Effacer</string>
+    <string name="AppDialog_ManualHint">Ajouter un package manuellement</string>
+    <string name="AppDialog_Add">Ajouter</string>
+    <string name="AppDialog_Done">Terminé</string>
+    <string name="AppDialog_InvalidPackage">Saisissez packageName, par exemple ru.yandex.music</string>
+
+    <!-- Render Apps -->
+    <string name="RenderApps_NothingFound">Aucun résultat</string>
+
+    <!-- Load Apps -->
+    <string name="LoadApps_AddedManually">Ajouté manuellement</string>
+
+    <!-- Boîte de dialogue Texte -->
+    <string name="TextDialog_Title">Paramètres de texte</string>
+    <string name="TextDialog_Description">Les paramètres de texte s\'appliquent immédiatement. Modifiez la taille et le style ici.</string>
+    <string name="TextDialog_TextSize">Taille du texte</string>
+    <string name="TextDialog_Bold">Texte en gras</string>
+    <string name="TextDialog_Shadow">Ombre du texte</string>
+    <string name="TextDialog_Font_Title">Police de la fenêtre</string>
+    <string name="TextDialog_Font_Description">Choisissez une police à partir d\'échantillons</string>
+    <string name="TextDialog_Preview">Aperçu de la fenêtre</string>
+    <string name="TextDialog_Done">Terminé</string>
+
+    <!-- Boîte de dialogue Fenêtre -->
+    <string name="WindowDialog_Title">Paramètres de la fenêtre</string>
+    <string name="WindowDialog_Description">Les paramètres de la fenêtre s\'appliquent immédiatement. Forme, durée et position sont ici.</string>
+    <string name="WindowDialog_Alpha">Transparence de la fenêtre</string>
+    <string name="WindowDialog_Corner">Rayon des coins</string>
+    <string name="WindowDialog_Border">Épaisseur de la bordure de la fenêtre</string>
+    <string name="WindowDialog_PaddingX">Décalage horizontal</string>
+    <string name="WindowDialog_PaddingY">Décalage vertical</string>
+    <string name="WindowDialog_DisplayTime">Durée d\'affichage, sec. 0 = ne pas masquer</string>
+    <string name="WindowDialog_Position_Title">Position de la fenêtre</string>
+    <string name="WindowDialog_Position_Description">Choisissez l\'une des positions standard de la fenêtre</string>
+    <string name="WindowDialog_Preset_Title">Préréglage de design</string>
+    <string name="WindowDialog_Preset_Description">Préréglages de forme et de style prêts à l\'emploi</string>
+    <string name="WindowDialog_Preview">Aperçu de la fenêtre</string>
+    <string name="WindowDialog_Done">Terminé</string>
+
+    <!-- Boîte de dialogue Couleurs -->
+    <string name="ColorDialog_Title">Paramètres de couleur</string>
+    <string name="ColorDialog_Description">Les paramètres de couleur s\'appliquent immédiatement. Toutes les couleurs de la superposition sont regroupées ici.</string>
+    <string name="ColorDialog_Window_Title">Couleur de la fenêtre</string>
+    <string name="ColorDialog_Window_Description">Palette de fond</string>
+    <string name="ColorDialog_Border_Title">Couleur de la bordure de la fenêtre</string>
+    <string name="ColorDialog_Border_Description">Palette de la bordure de superposition</string>
+    <string name="ColorDialog_Controls_Title">Couleur de la bordure des contrôles</string>
+    <string name="ColorDialog_Controls_Description">Palette pour les boutons ⏮ ⏯ ⏭</string>
+    <string name="ColorDialog_Artist_Title">Couleur de l\'artiste</string>
+    <string name="ColorDialog_Artist_Description">Couleur distincte pour le texte de l\'artiste</string>
+    <string name="ColorDialog_Track_Title">Couleur du titre du morceau</string>
+    <string name="ColorDialog_Track_Description">Couleur distincte pour le titre du morceau</string>
+    <string name="ColorDialog_Preview">Aperçu de la fenêtre</string>
+    <string name="ColorDialog_Done">Terminé</string>
+
+    <!-- Boîte de dialogue Fonctionnalités supplémentaires -->
+    <string name="ExtraDialog_Title">Fonctionnalités supplémentaires</string>
+    <string name="ExtraDialog_Description">N\'activez que ce dont vous avez vraiment besoin. Les modifications sont appliquées immédiatement.</string>
+    <string name="ExtraDialog_Controls">Boutons de contrôle multimédia dans la superposition</string>
+    <string name="ExtraDialog_SwipeTracks">Glissement sur la superposition : gauche/droite change de piste</string>
+    <string name="ExtraDialog_Snap">Aimantation : aux bords et au centre après glissement</string>
+    <string name="ExtraDialog_VolumeDim">Atténuer temporairement la fenêtre lors d\'un changement de volume</string>
+    <string name="ExtraDialog_Floating">Mode flottant : afficher la piste même sans navigation</string>
+    <string name="ExtraDialog_AlbumArt">Afficher la pochette d\'album dans la fenêtre</string>
+    <string name="ExtraDialog_HideWithNav">Masquer la fenêtre avec la navigation</string>
+    <string name="ExtraDialog_FixedWindow">Taille de fenêtre fixe</string>
+    <string name="ExtraDialog_FixedWindow_Hint">Vous pouvez verrouiller la largeur de la fenêtre puis la redimensionner avec deux doigts, comme un zoom sur une image.</string>
+    <string name="ExtraDialog_AlwaysShow">Afficher la fenêtre en continu</string>
+    <string name="ExtraDialog_Preview">Aperçu de la fenêtre</string>
+    <string name="ExtraDialog_Done">Terminé</string>
+
+    <!-- Boîte de dialogue Sélecteur de couleur -->
+    <string name="ColorPickerDialog_Description">Touchez une couleur — la fenêtre de test se met à jour immédiatement.</string>
+    <string name="ColorPickerDialog_Done">Terminé</string>
+
+    <!-- Titre de cible de couleur -->
+    <string name="ColorTargetTitle_Artist">Couleur de l\'artiste</string>
+    <string name="ColorTargetTitle_Title">Couleur du titre du morceau</string>
+    <string name="ColorTargetTitle_Window">Couleur de la fenêtre</string>
+
+    <!-- Boîte de dialogue Couleur de bordure -->
+    <string name="BorderColorDialog_Controls_Title">Couleur de la bordure des contrôles</string>
+    <string name="BorderColorDialog_Window_Title">Couleur de la bordure de la fenêtre</string>
+    <string name="BorderColorDialog_Controls_Description">Choisissez une couleur de bordure pour les boutons de contrôle. Les modifications sont immédiates.</string>
+    <string name="BorderColorDialog_Window_Description">Choisissez une couleur de bordure. L\'aperçu se met à jour immédiatement.</string>
+    <string name="BorderColorDialog_Done">Terminé</string>
+
+    <!-- Boîte de dialogue Police -->
+    <string name="FontDialog_Title">Police de la fenêtre</string>
+    <string name="FontDialog_Description">Choisissez une police par échantillon. Les modifications s\'appliquent immédiatement à la superposition.</string>
+    <string name="FontDialog_Sample">Exemple / Пример — ABC abc</string>
+    <string name="FontDialog_Hint_System">Police système Android</string>
+    <string name="FontDialog_Hint_Sample">Échantillon de superposition</string>
+    <string name="FontDialog_Hint_Selected">Police de superposition sélectionnée</string>
+    <string name="FontDialog_Done">Terminé</string>
+
+    <!-- Boîte de dialogue Position -->
+    <string name="PositionDialog_Title">Position de la fenêtre</string>
+    <string name="PositionDialog_Description">Choisissez une position standard. Les modifications sont immédiates.</string>
+    <string name="PositionDialog_TopLeft">En haut à gauche</string>
+    <string name="PositionDialog_TopCenter">En haut au centre</string>
+    <string name="PositionDialog_TopRight">En haut à droite</string>
+    <string name="PositionDialog_Center">Centre</string>
+    <string name="PositionDialog_BottomLeft">En bas à gauche</string>
+    <string name="PositionDialog_BottomCenter">En bas au centre</string>
+    <string name="PositionDialog_BottomRight">En bas à droite</string>
+    <string name="PositionDialog_Preview">Aperçu de la fenêtre</string>
+    <string name="PositionDialog_Done">Terminé</string>
+
+    <!-- Boîte de dialogue Préréglage de design -->
+    <string name="DesignPresetDialog_Title">Préréglage de design</string>
+    <string name="DesignPresetDialog_Description">Choisissez une forme et un style prêts à l\'emploi. Les modifications sont immédiates.</string>
+    <string name="DesignPresetDialog_Classic">Classique — apparence actuelle</string>
+    <string name="DesignPresetDialog_Minimal">Minimal — plaque sombre fine</string>
+    <string name="DesignPresetDialog_Glass">Verre — vagues douces</string>
+    <string name="DesignPresetDialog_CarUI">Car UI — style automobile</string>
+    <string name="DesignPresetDialog_Soft">Soft — carte douce</string>
+    <string name="DesignPresetDialog_Contrast">Contraste — style contrasté</string>
+    <string name="DesignPresetDialog_Capsule">Capsule — forme en capsule</string>
+    <string name="DesignPresetDialog_Premium">Premium — style sombre dense</string>
+    <string name="DesignPresetDialog_Spikes">Pointes — pointes</string>
+    <string name="DesignPresetDialog_Orbit">Orbite — style rond</string>
+    <string name="DesignPresetDialog_Preview">Aperçu de la fenêtre</string>
+    <string name="DesignPresetDialog_Done">Terminé</string>
+
+    <!-- Diagnostics -->
+    <string name="Diagnostics_Copied">Diagnostics copiés</string>
+
+    <!-- Statut -->
+    <string name="Status_Label_Status">Statut : </string>
+    <string name="Status_Label_Permissions">Autorisations : </string>
+    <string name="Status_Label_Navigator">Navigateur : </string>
+    <string name="Status_Label_Music">Musique : </string>
+    <string name="Status_Label_AccessibilityService">Service d\'accessibilité : </string>
+    <string name="Status_Enabled">Activé</string>
+    <string name="Status_Disabled">Désactivé</string>
+    <string name="Status_Permissions_Granted">Accordées</string>
+    <string name="Status_Permissions_NotAll">Pas toutes accordées</string>
+    <string name="Status_Running">En cours d\'exécution</string>
+    <string name="Status_No">Non</string>
+    <string name="Status_NoConnection">Pas de connexion</string>
+
+    <!-- Restauration -->
+    <string name="Recover_EnableFirst">Activez d\'abord l\'application</string>
+    <string name="Recover_AccessibilityOff">L\'accessibilité est désactivée. Ouvrez les paramètres et réactivez Navi Overlay.</string>
+    <string name="Recover_UsageAccessRequired">L\'accès à l\'utilisation est requis.</string>
+    <string name="Recover_AccessibilityNotResponding">L\'accessibilité est activée mais ne répond pas. Ouvrez l\'écran et reconnectez Navi Overlay.</string>
+    <string name="Recover_NoProblems">Moteur revérifié. Aucun problème critique détecté.</string>
+
+    <!-- Notifications -->
+    <string name="PostNotif_NotRequired">Sur Android 12 et inférieur, une autorisation de notification distincte n\'est pas requise</string>
+    <string name="PostNotif_OpenFailed">Échec de l\'ouverture des paramètres de notification</string>
+
+    <!-- ForegroundDetector -->
+    <string name="ForegroundDetector_Accessibility">Accessibilité</string>
+    <string name="ForegroundDetector_UsageStats">UsageStats</string>
+    <string name="ForegroundDetector_LastNav">Dernier nav</string>
+    <string name="ForegroundDetector_NoData">aucune donnée</string>
+    <string name="ForegroundDetector_None">aucun</string>
+
+    <!-- AppStateDetector -->
+    <string name="AppStateDetector_FilterDisabled">Filtre du navigateur désactivé</string>
+    <string name="AppStateDetector_NavOnScreen">Navigateur à l\'écran</string>
+    <string name="AppStateDetector_NavViaUsage">Navigateur détecté via UsageStats</string>
+    <string name="AppStateDetector_NavViaUsageAccOff">Navigateur détecté via UsageStats, accessibilité désactivée</string>
+    <string name="AppStateDetector_TransientWindow">Fenêtre système temporaire au-dessus du navigateur</string>
+    <string name="AppStateDetector_OtherAppOpen">Une autre application est ouverte</string>
+    <string name="AppStateDetector_NavMinimized">Navigateur minimisé, autre application à l\'écran</string>
+    <string name="AppStateDetector_UsageShowsOther">UsageStats indique une autre application</string>
+    <string name="AppStateDetector_AccTempNoData">L\'accessibilité n\'a temporairement aucune donnée, utilisation du dernier navigateur</string>
+    <string name="AppStateDetector_AccOffUseLast">Accessibilité désactivée, utilisation du dernier navigateur</string>
+    <string name="AppStateDetector_AccDisabled">Accessibilité désactivée — détection du navigateur instable</string>
+    <string name="AppStateDetector_NavNotOnScreen">Navigateur pas à l\'écran</string>
+
+</resources>

@@ -2,9 +2,12 @@ package com.navioverlay.car.engine;
 
 import android.content.Context;
 import android.text.TextUtils;
+import com.navioverlay.car.R;
 import com.navioverlay.car.core.Prefs;
 import com.navioverlay.car.services.ForegroundDetector;
 import com.navioverlay.car.services.ForegroundState;
+
+import static com.navioverlay.car.helpers.LocaleHelper.tr;
 
 /**
  * Определяет, действительно ли выбранный навигатор сейчас является основным экраном.
@@ -22,7 +25,7 @@ public final class AppStateDetector {
 
     public Result read() {
         if (!prefs.showOnlyWithTrigger()) {
-            return new Result(true, "disabled-filter", false, "Фильтр навигатора выключен");
+            return new Result(true, "disabled-filter", false, tr(app, R.string.AppStateDetector_FilterDisabled));
         }
 
         long now = System.currentTimeMillis();
@@ -38,14 +41,16 @@ public final class AppStateDetector {
 
         if (prefs.isTrigger(accessibilityPkg)) {
             lastNavigatorVisibleAt = now;
-            return new Result(true, accessibilityPkg, false, "Навигатор на экране");
+            return new Result(true, accessibilityPkg, false, tr(app, R.string.AppStateDetector_NavOnScreen));
         }
 
         if (prefs.isTrigger(usagePkg)) {
             prefs.setLastTrigger(usagePkg);
             lastNavigatorVisibleAt = now;
-            return new Result(true, usagePkg, false,
-                    accEnabled ? "Навигатор определён через UsageStats" : "Навигатор определён через UsageStats, Accessibility выключен");
+            return new Result(true, usagePkg, false, tr(app, accEnabled
+                ? R.string.AppStateDetector_NavViaUsage
+                : R.string.AppStateDetector_NavViaUsageAccOff
+            ));
         }
 
         String pkg = !accessibilityPkg.isEmpty() ? accessibilityPkg : usagePkg;
@@ -69,16 +74,18 @@ public final class AppStateDetector {
                 || (TextUtils.isEmpty(accessibilityPkg) && TextUtils.isEmpty(usagePkg));
 
         if (transientWindow && now - lastNavigatorVisibleAt < graceMs) {
-            return new Result(true, pkg, true, "Временное системное окно поверх навигатора");
+            return new Result(true, pkg, true, tr(app, R.string.AppStateDetector_TransientWindow));
         }
 
         if (accessibilityOtherApp) {
-            return new Result(false, accessibilityPkg, false, "Открыто другое приложение");
+            return new Result(false, accessibilityPkg, false, tr(app, R.string.AppStateDetector_OtherAppOpen));
         }
 
         if (usageOtherApp) {
-            return new Result(false, usagePkg, false,
-                    accEnabled ? "Навигатор свернут, на экране другое приложение" : "UsageStats показывает другое приложение");
+            return new Result(false, usagePkg, false, tr(app, accEnabled
+                ? R.string.AppStateDetector_NavMinimized
+                : R.string.AppStateDetector_UsageShowsOther
+            ));
         }
 
         String lastTrigger = TrackSnapshot.clean(ForegroundState.lastTrigger());
@@ -89,15 +96,17 @@ public final class AppStateDetector {
             lastTriggerAgeMs = persistedAt > 0L ? Math.max(0L, now - persistedAt) : Long.MAX_VALUE;
         }
         if (canUseLastTriggerFallback && !lastTrigger.isEmpty() && lastTriggerAgeMs < graceMs && !selfOnScreen) {
-            return new Result(true, lastTrigger, true,
-                    accEnabled ? "Accessibility временно без данных, используем последний навигатор" : "Accessibility выключен, используем последний навигатор");
+            return new Result(true, lastTrigger, true, tr(app, accEnabled
+                ? R.string.AppStateDetector_AccTempNoData
+                : R.string.AppStateDetector_AccOffUseLast
+            ));
         }
 
         if (!accEnabled) {
-            return new Result(false, usagePkg, false, "Спец. возможности выключены — навигатор определяется нестабильно");
+            return new Result(false, usagePkg, false, tr(app, R.string.AppStateDetector_AccDisabled));
         }
 
-        return new Result(false, pkg, false, "Навигатор не на экране");
+        return new Result(false, pkg, false, tr(app, R.string.AppStateDetector_NavNotOnScreen));
     }
 
     public static final class Result {

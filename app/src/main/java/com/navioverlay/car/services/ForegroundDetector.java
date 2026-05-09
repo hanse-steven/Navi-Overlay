@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.Process;
 import android.provider.Settings;
 import android.text.TextUtils;
+import com.navioverlay.car.R;
 import com.navioverlay.car.core.Prefs;
 import java.util.List;
 import java.util.Locale;
@@ -79,5 +80,16 @@ public final class ForegroundDetector { private ForegroundDetector(){}
         // и после него не было другого обычного приложения, считаем, что пользователь вернулся в навигатор.
         return !TextUtils.isEmpty(ForegroundState.lastTrigger()) && ForegroundState.lastTriggerAgeMs()<10*60*1000 && TextUtils.isEmpty(u);
     }
-    public static String debugCurrent(Context c){ String a=ForegroundState.get(); String u=currentByUsage(c); return "Accessibility: "+(a.isEmpty()?"нет данных":a)+" / UsageStats: "+(u.isEmpty()?"нет данных":u)+" / LastNav: "+(ForegroundState.lastTrigger().isEmpty()?"нет":ForegroundState.lastTrigger()); }
+
+    public static String debugCurrent(Context c){
+        String a = ForegroundState.get();
+        String u = currentByUsage(c);
+        String noData = tr(c, R.string.ForegroundDetector_NoData);
+        String no = tr(c, R.string.ForegroundDetector_None);
+        return tr(c, R.string.ForegroundDetector_Accessibility) + ": " + (a.isEmpty() ? noData : a)
+                + " / " + tr(c, R.string.ForegroundDetector_UsageStats) + ": " + (u.isEmpty() ? noData : u)
+                + " / " + tr(c, R.string.ForegroundDetector_LastNav) + ": " + (ForegroundState.lastTrigger().isEmpty() ? no : ForegroundState.lastTrigger());
+    }
+
+    private static String tr(Context c, int traductionKey) {return c.getString(traductionKey);}
 }

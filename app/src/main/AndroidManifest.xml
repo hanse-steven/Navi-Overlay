@@ -22,6 +22,7 @@
     </queries>
 
     <application
+        android:localeConfig="@xml/locales_config"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher_round"
@@ -38,7 +39,7 @@
 
         <service
             android:name=".services.MusicNotificationListenerService"
-            android:label="Navi Overlay — уведомления музыки"
+            android:label="@string/notification_permission"
             android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE"
             android:exported="true">
             <intent-filter>
@@ -48,7 +49,7 @@
 
         <service
             android:name=".services.NavigatorAccessibilityService"
-            android:label="Navi Overlay — определение навигатора"
+            android:label="@string/accessibility_permission"
             android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE"
             android:exported="true">
             <intent-filter>
@@ -66,7 +67,7 @@
             android:foregroundServiceType="specialUse">
             <property
                 android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
-                android:value="Постоянный локальный мониторинг активного навигатора и музыки для показа overlay-окна трека на автомобильной магнитоле" />
+                android:value="@string/monitor_permission" />
         </service>
 
         <receiver android:name=".receivers.BootReceiver" android:enabled="true" android:exported="true">

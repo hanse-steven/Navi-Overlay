@@ -32,7 +32,6 @@ import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.Space;
@@ -40,6 +39,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.navioverlay.car.R;
 import com.navioverlay.car.core.AppInfo;
 import com.navioverlay.car.core.Constants;
 import com.navioverlay.car.core.OverlayFonts;
@@ -48,6 +48,7 @@ import com.navioverlay.car.core.Ui;
 import com.navioverlay.car.engine.AppStateDetector;
 import com.navioverlay.car.engine.MusicStateDetector;
 import com.navioverlay.car.engine.TrackSnapshot;
+import com.navioverlay.car.helpers.LocaleHelper;
 import com.navioverlay.car.overlay.TrackOverlayManager;
 import com.navioverlay.car.services.ForegroundDetector;
 import com.navioverlay.car.services.ForegroundState;
@@ -83,9 +84,14 @@ public class MainActivity extends Activity {
     private Switch onlyTriggerSwitch;
     private Switch englishUiSwitch;
 
+
+    @Override protected void attachBaseContext(Context base) {
+        prefs = new Prefs(base);
+        super.attachBaseContext(LocaleHelper.wrap(base, prefs.englishUi()));
+    }
+
     @Override public void onCreate(Bundle b) {
         super.onCreate(b);
-        prefs = new Prefs(this);
         requestPostNotificationsRuntimeOnly();
         buildUi();
         refreshStatus();
@@ -112,7 +118,7 @@ public class MainActivity extends Activity {
         TextView title = tv("Navi Overlay", 36, TEXT, Typeface.BOLD, Gravity.CENTER);
         title.setLetterSpacing(0.01f);
         root.addView(title, matchWrap());
-        TextView subtitle = tv(tr("Музыка поверх навигатора — аккуратно и без отвлечения", "Music over navigation — clean and distraction-free"), 15, MUTED, Typeface.NORMAL, Gravity.CENTER);
+        TextView subtitle = tv(tr(R.string.app_subtitle), 15, MUTED, Typeface.NORMAL, Gravity.CENTER);
         subtitle.setLineSpacing(Ui.dp(this, 2), 1.0f);
         root.addView(subtitle, matchWrap());
         space(root, 18);
@@ -126,7 +132,7 @@ public class MainActivity extends Activity {
     }
 
     private void addStatusCard() {
-        LinearLayout c = card(tr("Состояние", "Status"), tr("Короткая сводка по движку, разрешениям и активным приложениям.", "A short summary of the engine, permissions and active apps."));
+        LinearLayout c = card(tr(R.string.StatutCard_Title), tr(R.string.StatutCard_Description));
         statusView = tv("", 16, TEXT, Typeface.BOLD, Gravity.START);
         statusView.setLineSpacing(Ui.dp(this, 4), 1.0f);
         statusView.setBackground(Ui.stroke(FIELD, 1, STROKE_SOFT, 18, this));
@@ -135,53 +141,53 @@ public class MainActivity extends Activity {
     }
 
     private void addMainCard() {
-        LinearLayout c = card(tr("Главное", "Main"), tr("Быстрое включение приложения, основной режим показа и язык интерфейса.", "Quick app enable, core display mode and interface language."));
-        enableSwitch = switchRow(c, tr("Включить приложение", "Enable app"), prefs.enabled(), on -> {
+        LinearLayout c = card(tr(R.string.MainCard_Title), tr(R.string.MainCard_Description));
+        enableSwitch = switchRow(c, tr(R.string.MainCard_EnableSwitch), prefs.enabled(), on -> {
             prefs.setEnabled(on);
             if (on) MonitorService.start(this); else { MonitorService.stop(this); TrackOverlayManager.hideNowForce(); }
             refreshStatus();
         });
-        onlyTriggerSwitch = switchRow(c, tr("Показывать только поверх выбранных приложений", "Show only over selected apps"), prefs.showOnlyWithTrigger(), on -> {
+        onlyTriggerSwitch = switchRow(c, tr(R.string.MainCard_OnlyTriggerSwitch), prefs.showOnlyWithTrigger(), on -> {
             prefs.setShowOnlyWithTrigger(on);
             TrackOverlayManager.hideNowForce();
         });
-        englishUiSwitch = switchRow(c, "English UI", prefs.englishUi(), on -> {
+        englishUiSwitch = switchRow(c, tr(R.string.MainCard_EnglishUI), prefs.englishUi(), on -> {
             prefs.setEnglishUi(on);
             recreate();
         });
     }
 
     private void addAppsCard() {
-        LinearLayout c = card(tr("Приложения", "Apps"), tr("Выбор навигаторов и плееров вынесен в отдельные аккуратные списки.", "Choose navigation apps and music players in separate lists."));
-        c.addView(menuButton(tr("Приложения навигации", "Navigation apps"), tr("Где показывать окно", "Where the window may appear"), v -> showAppDialog(true)), smallGapLp());
-        c.addView(menuButton(tr("Аудио приложения", "Audio apps"), tr("Откуда брать название трека", "Where track data comes from"), v -> showAppDialog(false)), smallGapLp());
+        LinearLayout c = card(tr(R.string.AppsCard_Title), tr(R.string.AppsCard_Description));
+        c.addView(menuButton(tr(R.string.AppsCard_NavigationButton_Title), tr(R.string.AppsCard_NavigationButton_Title), v -> showAppDialog(true)), smallGapLp());
+        c.addView(menuButton(tr(R.string.AppsCard_MusicButton_Title), tr(R.string.AppsCard_MusicButton_Description), v -> showAppDialog(false)), smallGapLp());
     }
 
     private void addSettingsCard() {
-        LinearLayout c = card(tr("Настройки", "Settings"), tr("Все настройки окна, текста, цветов и дополнительных функций собраны в одном месте.", "All window, text, color and extra feature settings are collected in one place."));
-        c.addView(menuButton(tr("Настройки текста", "Text settings"), tr("Размер текста, шрифт и жирный шрифт", "Text size, font and bold text"), v -> showTextSettingsDialog()), smallGapLp());
-        c.addView(menuButton(tr("Настройки окна", "Window settings"), tr("Прозрачность, форма, отступы, время и положение", "Transparency, shape, offsets, time and position"), v -> showWindowSettingsDialog()), smallGapLp());
-        c.addView(menuButton(tr("Настройки цвета", "Color settings"), tr("Цвет окна, рамки, кнопок и текста", "Window, border, control and text colors"), v -> showColorSettingsDialog()), smallGapLp());
-        c.addView(menuButton(tr("Дополнительные функции", "Extra features"), tr("Управление музыкой, обложка, fixed mode и прочее", "Music controls, album art, fixed mode and more"), v -> showAdditionalFeaturesDialog()), smallGapLp());
+        LinearLayout c = card(tr(R.string.SettingsCard_Title), tr(R.string.SettingsCard_Description));
+        c.addView(menuButton(tr(R.string.SettingsCard_TextButton_Title), tr(R.string.SettingsCard_TextButton_Description), v -> showTextSettingsDialog()), smallGapLp());
+        c.addView(menuButton(tr(R.string.SettingsCard_WindowButton_Title), tr(R.string.SettingsCard_WindowButton_Description), v -> showWindowSettingsDialog()), smallGapLp());
+        c.addView(menuButton(tr(R.string.SettingsCard_ColorButton_Title), tr(R.string.SettingsCard_ColorButton_Description), v -> showColorSettingsDialog()), smallGapLp());
+        c.addView(menuButton(tr(R.string.SettingsCard_ExtraButton_Title), tr(R.string.SettingsCard_ExtraButton_Description), v -> showAdditionalFeaturesDialog()), smallGapLp());
     }
 
     private void addPermissionsCard() {
-        LinearLayout c = card(tr("Разрешения", "Permissions"), tr("Выдай все разрешения один раз, чтобы движок работал стабильно.", "Grant permissions once so the engine works reliably."));
-        c.addView(menuButton(tr("Поверх окон", "Draw over apps"), tr("Разрешить показ окна над навигатором", "Allow the window above navigation apps"), v -> startActivity(new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + getPackageName())))), smallGapLp());
-        c.addView(menuButton(tr("Доступ к уведомлениям", "Notification access"), tr("Нужен для MediaSession и уведомлений плееров", "Needed for MediaSession and player notifications"), v -> startActivity(new Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS))), smallGapLp());
-        c.addView(menuButton(tr("Уведомления приложения", "App notifications"), tr("Нужно только на Android 13+", "Needed only on Android 13+"), v -> openPostNotificationsFlow()), smallGapLp());
-        c.addView(menuButton(tr("Специальные возможности", "Accessibility"), tr("Определяет, открыт ли навигатор на экране", "Detects whether navigation is on screen"), v -> startActivity(new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS))), smallGapLp());
-        c.addView(menuButton(tr("История использования", "Usage access"), tr("Запасной способ определения активного приложения", "Fallback way to detect the active app"), v -> startActivity(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))), smallGapLp());
+        LinearLayout c = card(tr(R.string.PermissionsCard_Title), tr(R.string.PermissionsCard_Description));
+        c.addView(menuButton(tr(R.string.PermissionsCard_Overlay_Title), tr(R.string.PermissionsCard_Overlay_Description), v -> startActivity(new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + getPackageName())))), smallGapLp());
+        c.addView(menuButton(tr(R.string.PermissionsCard_Notification_Title), tr(R.string.PermissionsCard_Notification_Description), v -> startActivity(new Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS))), smallGapLp());
+        c.addView(menuButton(tr(R.string.PermissionsCard_AppNotif_Title), tr(R.string.PermissionsCard_AppNotif_Description), v -> openPostNotificationsFlow()), smallGapLp());
+        c.addView(menuButton(tr(R.string.PermissionsCard_Accessibility_Title), tr(R.string.PermissionsCard_Accessibility_Description), v -> startActivity(new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS))), smallGapLp());
+        c.addView(menuButton(tr(R.string.PermissionsCard_Usage_Title), tr(R.string.PermissionsCard_Usage_Description), v -> startActivity(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))), smallGapLp());
     }
 
     private void addDiagnosticsCard() {
-        LinearLayout c = card(tr("Диагностика", "Diagnostics"), tr("Короткая проверка, если окно не появляется.", "Quick checks if the window does not appear."));
-        c.addView(menuButton(tr("Проверить активное приложение", "Check active app"), tr("Показать текущий пакет Android", "Show the current Android package"), v -> {
+        LinearLayout c = card(tr(R.string.DiagnosticsCard_Title), tr(R.string.DiagnosticsCard_Description));
+        c.addView(menuButton(tr(R.string.DiagnosticsCard_CheckApp_Title), tr(R.string.DiagnosticsCard_CheckApp_Description), v -> {
             refreshStatus();
             Toast.makeText(this, ForegroundDetector.debugCurrent(this), Toast.LENGTH_LONG).show();
         }), smallGapLp());
-        c.addView(menuButton(tr("Проверить и восстановить", "Check and recover"), tr("Откроет нужные настройки только если правда есть проблема", "Opens the needed settings only if there is a real problem"), v -> checkAndRecover()), smallGapLp());
-        c.addView(menuButton(tr("Скопировать отчёт", "Copy report"), tr("Собрать статусы разрешений, навигатора и музыки", "Collect permission, navigator and music status"), v -> copyDiagnosticsReport()), smallGapLp());
+        c.addView(menuButton(tr(R.string.DiagnosticsCard_Recover_Title), tr(R.string.DiagnosticsCard_Recover_Description), v -> checkAndRecover()), smallGapLp());
+        c.addView(menuButton(tr(R.string.DiagnosticsCard_CopyReport_Title), tr(R.string.DiagnosticsCard_CopyReport_Description), v -> copyDiagnosticsReport()), smallGapLp());
     }
 
     private interface BoolCb { void set(boolean b); }
@@ -208,12 +214,12 @@ public class MainActivity extends Activity {
         LinearLayout box = dialogRoot();
         dialog.setContentView(box);
 
-        box.addView(tv(tr(triggers ? "Приложения навигации" : "Аудио приложения", triggers ? "Navigation apps" : "Audio apps"), 24, TEXT, Typeface.BOLD, Gravity.CENTER), matchWrap());
-        box.addView(tv(tr(triggers ? "Выбери приложения, поверх которых можно показывать окно." : "Выбери плееры, откуда брать название трека.", triggers ? "Choose apps over which the window may appear." : "Choose players used for track metadata."), 14, MUTED, Typeface.NORMAL, Gravity.CENTER), matchWrap());
+        box.addView(tv(tr(triggers ? R.string.AppDialog_Title_Nav : R.string.AppDialog_Title_Audio), 24, TEXT, Typeface.BOLD, Gravity.CENTER), matchWrap());
+        box.addView(tv(tr(triggers ? R.string.AppDialog_Subtitle_Nav : R.string.AppDialog_Subtitle_Audio), 14, MUTED, Typeface.NORMAL, Gravity.CENTER), matchWrap());
         space(box, 14);
 
         EditText search = new EditText(this);
-        search.setHint(tr("Поиск по названию или пакету", "Search by label or package"));
+        search.setHint(tr(R.string.AppDialog_SearchHint));
         search.setSingleLine(true);
         search.setTextColor(TEXT);
         search.setHintTextColor(0xFF7F8EA3);
@@ -228,8 +234,8 @@ public class MainActivity extends Activity {
         quick.setClipChildren(false);
         quick.setClipToPadding(false);
         quick.setPadding(0, 0, 0, Ui.dp(this, 10));
-        quick.addView(secondaryButton(tr(triggers ? "Яндекс + карты" : "Популярные плееры", triggers ? "Yandex + maps" : "Popular players"), null), quickButtonLp(1));
-        quick.addView(secondaryButton(tr("Очистить", "Clear"), null), quickButtonLp(1));
+        quick.addView(secondaryButton(tr(triggers ? R.string.AppDialog_Popular_Nav : R.string.AppDialog_Popular_Audio), null), quickButtonLp(1));
+        quick.addView(secondaryButton(tr(R.string.AppDialog_Clear), null), quickButtonLp(1));
         Button popular = (Button) quick.getChildAt(0);
         Button clear = (Button) quick.getChildAt(1);
         popular.setTextSize(triggers ? 14 : 13);
@@ -247,7 +253,7 @@ public class MainActivity extends Activity {
         LinearLayout manualRow = new LinearLayout(this);
         manualRow.setOrientation(LinearLayout.HORIZONTAL);
         EditText manualPackage = new EditText(this);
-        manualPackage.setHint(tr("Добавить пакет вручную", "Add package manually"));
+        manualPackage.setHint(tr(R.string.AppDialog_ManualHint));
         manualPackage.setSingleLine(true);
         manualPackage.setTextColor(TEXT);
         manualPackage.setHintTextColor(0xFF7F8EA3);
@@ -255,7 +261,7 @@ public class MainActivity extends Activity {
         manualPackage.setBackground(Ui.stroke(FIELD, 1, STROKE, 16, this));
         Ui.pad(manualPackage, 12, 10, 12, 10);
         manualRow.addView(manualPackage, new LinearLayout.LayoutParams(0, Ui.dp(this, 48), 1));
-        Button addManual = secondaryButton(tr("Добавить", "Add"), null);
+        Button addManual = secondaryButton(tr(R.string.AppDialog_Add), null);
         manualRow.addView(addManual, new LinearLayout.LayoutParams(Ui.dp(this, 112), Ui.dp(this, 48)));
         box.addView(manualRow, smallGapLp());
 
@@ -265,7 +271,7 @@ public class MainActivity extends Activity {
         sv.addView(list);
         box.addView(sv, new LinearLayout.LayoutParams(-1, 0, 1));
 
-        Button done = primaryButton(tr("Готово", "Done"), v -> dialog.dismiss());
+        Button done = primaryButton(tr(R.string.AppDialog_Done), v -> dialog.dismiss());
         box.addView(done, btnLp());
 
         final Runnable[] render = new Runnable[1];
@@ -286,7 +292,7 @@ public class MainActivity extends Activity {
         addManual.setOnClickListener(v -> {
             String pkg = manualPackage.getText().toString().trim();
             if (pkg.length() < 3 || !pkg.contains(".")) {
-                Toast.makeText(this, tr("Введите packageName, например ru.yandex.music", "Enter packageName, for example ru.yandex.music"), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, tr(R.string.AppDialog_InvalidPackage), Toast.LENGTH_SHORT).show();
                 return;
             }
             Set<String> s = triggers ? prefs.triggers() : prefs.players();
@@ -326,7 +332,7 @@ public class MainActivity extends Activity {
             list.addView(cb, smallGapLp());
             count++;
         }
-        if (count == 0) list.addView(tv(tr("Ничего не найдено", "Nothing found"), 15, MUTED, Typeface.NORMAL, Gravity.CENTER), btnLp());
+        if (count == 0) list.addView(tv(tr(R.string.RenderApps_NothingFound), 15, MUTED, Typeface.NORMAL, Gravity.CENTER), btnLp());
     }
 
     private ArrayList<AppInfo> loadApps(Set<String> selected) {
@@ -343,7 +349,7 @@ public class MainActivity extends Activity {
             seen.add(p);
         }
         for (String p : selected) {
-            if (p != null && !p.isEmpty() && !seen.contains(p)) out.add(new AppInfo(tr("Добавлено вручную", "Added manually"), p, true));
+            if (p != null && !p.isEmpty() && !seen.contains(p)) out.add(new AppInfo(tr(R.string.LoadApps_AddedManually), p, true));
         }
         Collections.sort(out, (a, b) -> {
             if (a.selected != b.selected) return a.selected ? -1 : 1;
@@ -357,8 +363,8 @@ public class MainActivity extends Activity {
         LinearLayout outer = dialogRoot();
         dialog.setContentView(outer);
 
-        outer.addView(tv(tr("Настройки текста", "Text settings"), 24, TEXT, Typeface.BOLD, Gravity.CENTER), matchWrap());
-        outer.addView(tv(tr("Настройки текста применяются сразу. Здесь можно изменить размер и стиль текста.", "Text settings apply immediately. Change size and style here."), 14, MUTED, Typeface.NORMAL, Gravity.CENTER), matchWrap());
+        outer.addView(tv(tr(R.string.TextDialog_Title), 24, TEXT, Typeface.BOLD, Gravity.CENTER), matchWrap());
+        outer.addView(tv(tr(R.string.TextDialog_Description), 14, MUTED, Typeface.NORMAL, Gravity.CENTER), matchWrap());
         space(outer, 12);
 
         ScrollView sv = new ScrollView(this);
@@ -369,13 +375,13 @@ public class MainActivity extends Activity {
         sv.addView(box, new ScrollView.LayoutParams(-1, -2));
         outer.addView(sv, new LinearLayout.LayoutParams(-1, 0, 1));
 
-        addSeek(box, tr("Размер текста", "Text size"), 1, 100, prefs.textSize(), v -> { prefs.setTextSize(v); TrackOverlayManager.refresh(this); });
-        switchRow(box, tr("Жирный шрифт", "Bold text"), prefs.textBold(), on -> { prefs.setTextBold(on); TrackOverlayManager.refresh(this); });
-        switchRow(box, tr("Тень текста", "Text shadow"), prefs.textShadow(), on -> { prefs.setTextShadow(on); TrackOverlayManager.refresh(this); });
-        box.addView(menuButton(tr("Шрифт окна", "Window font"), tr("Выбор шрифта из набора образцов", "Pick a font from preview samples"), v -> showFontDialog()), smallGapLp());
-        box.addView(previewButton(tr("Проверить окно", "Preview window"), v -> TrackOverlayManager.test(this)), btnLp());
+        addSeek(box, tr(R.string.TextDialog_TextSize), 1, 100, prefs.textSize(), v -> { prefs.setTextSize(v); TrackOverlayManager.refresh(this); });
+        switchRow(box, tr(R.string.TextDialog_Bold), prefs.textBold(), on -> { prefs.setTextBold(on); TrackOverlayManager.refresh(this); });
+        switchRow(box, tr(R.string.TextDialog_Shadow), prefs.textShadow(), on -> { prefs.setTextShadow(on); TrackOverlayManager.refresh(this); });
+        box.addView(menuButton(tr(R.string.TextDialog_Font_Title), tr(R.string.TextDialog_Font_Description), v -> showFontDialog()), smallGapLp());
+        box.addView(previewButton(tr(R.string.TextDialog_Preview), v -> TrackOverlayManager.test(this)), btnLp());
 
-        outer.addView(secondaryButton(tr("Готово", "Done"), v -> dialog.dismiss()), btnLp());
+        outer.addView(secondaryButton(tr(R.string.TextDialog_Done), v -> dialog.dismiss()), btnLp());
         dialog.show();
         fitDialog(dialog, true);
     }
@@ -385,8 +391,8 @@ public class MainActivity extends Activity {
         LinearLayout outer = dialogRoot();
         dialog.setContentView(outer);
 
-        outer.addView(tv(tr("Настройки окна", "Window settings"), 24, TEXT, Typeface.BOLD, Gravity.CENTER), matchWrap());
-        outer.addView(tv(tr("Настройки окна применяются сразу. Здесь собраны форма, время и положение overlay.", "Window settings apply immediately. Shape, timing and position live here."), 14, MUTED, Typeface.NORMAL, Gravity.CENTER), matchWrap());
+        outer.addView(tv(tr(R.string.WindowDialog_Title), 24, TEXT, Typeface.BOLD, Gravity.CENTER), matchWrap());
+        outer.addView(tv(tr(R.string.WindowDialog_Description), 14, MUTED, Typeface.NORMAL, Gravity.CENTER), matchWrap());
         space(outer, 12);
 
         ScrollView sv = new ScrollView(this);
@@ -397,17 +403,17 @@ public class MainActivity extends Activity {
         sv.addView(box, new ScrollView.LayoutParams(-1, -2));
         outer.addView(sv, new LinearLayout.LayoutParams(-1, 0, 1));
 
-        addSeek(box, tr("Прозрачность окна", "Window transparency"), 15, 100, prefs.windowAlpha(), v -> { prefs.setWindowAlpha(v); TrackOverlayManager.refresh(this); });
-        addSeek(box, tr("Скругление углов", "Corner radius"), 0, 40, prefs.corner(), v -> { prefs.setCorner(v); TrackOverlayManager.refresh(this); });
-        addSeek(box, tr("Толщина рамки окна", "Window border thickness"), 0, 12, prefs.borderWidth(), v -> { prefs.setBorderWidth(v); TrackOverlayManager.refresh(this); });
-        addSeek(box, tr("Горизонтальный отступ", "Horizontal offset"), 8, 48, prefs.paddingX(), v -> { prefs.setPaddingX(v); TrackOverlayManager.refresh(this); });
-        addSeek(box, tr("Вертикальный отступ", "Vertical offset"), 6, 100, prefs.paddingY(), v -> { prefs.setPaddingY(v); TrackOverlayManager.refresh(this); });
-        addSeek(box, tr("Время показа, сек. 0 = не скрывать", "Display time, sec. 0 = do not hide"), 0, 10, prefs.displayMs() / 1000, v -> { prefs.setDisplayMs(v * 1000); TrackOverlayManager.refresh(this); });
-        box.addView(menuButton(tr("Положение окна", "Window position"), tr("Выбор одного из стандартных положений окна", "Choose one of the standard window positions"), v -> showPositionDialog()), smallGapLp());
-        box.addView(menuButton(tr("Пресет дизайна", "Design preset"), tr("Готовые стили формы и оформления overlay", "Ready-made overlay shape and style presets"), v -> showDesignPresetDialog()), smallGapLp());
-        box.addView(previewButton(tr("Проверить окно", "Preview window"), v -> TrackOverlayManager.test(this)), btnLp());
+        addSeek(box, tr(R.string.WindowDialog_Alpha), 15, 100, prefs.windowAlpha(), v -> { prefs.setWindowAlpha(v); TrackOverlayManager.refresh(this); });
+        addSeek(box, tr(R.string.WindowDialog_Corner), 0, 40, prefs.corner(), v -> { prefs.setCorner(v); TrackOverlayManager.refresh(this); });
+        addSeek(box, tr(R.string.WindowDialog_Border), 0, 12, prefs.borderWidth(), v -> { prefs.setBorderWidth(v); TrackOverlayManager.refresh(this); });
+        addSeek(box, tr(R.string.WindowDialog_PaddingX), 8, 48, prefs.paddingX(), v -> { prefs.setPaddingX(v); TrackOverlayManager.refresh(this); });
+        addSeek(box, tr(R.string.WindowDialog_PaddingY), 6, 100, prefs.paddingY(), v -> { prefs.setPaddingY(v); TrackOverlayManager.refresh(this); });
+        addSeek(box, tr(R.string.WindowDialog_DisplayTime), 0, 10, prefs.displayMs() / 1000, v -> { prefs.setDisplayMs(v * 1000); TrackOverlayManager.refresh(this); });
+        box.addView(menuButton(tr(R.string.WindowDialog_Position_Title), tr(R.string.WindowDialog_Position_Description), v -> showPositionDialog()), smallGapLp());
+        box.addView(menuButton(tr(R.string.WindowDialog_Preset_Title), tr(R.string.WindowDialog_Preset_Description), v -> showDesignPresetDialog()), smallGapLp());
+        box.addView(previewButton(tr(R.string.WindowDialog_Preview), v -> TrackOverlayManager.test(this)), btnLp());
 
-        outer.addView(secondaryButton(tr("Готово", "Done"), v -> dialog.dismiss()), btnLp());
+        outer.addView(secondaryButton(tr(R.string.WindowDialog_Done), v -> dialog.dismiss()), btnLp());
         dialog.show();
         fitDialog(dialog, true);
     }
@@ -417,8 +423,8 @@ public class MainActivity extends Activity {
         LinearLayout outer = dialogRoot();
         dialog.setContentView(outer);
 
-        outer.addView(tv(tr("Настройки цвета", "Color settings"), 24, TEXT, Typeface.BOLD, Gravity.CENTER), matchWrap());
-        outer.addView(tv(tr("Цветовые настройки применяются сразу. Здесь собраны все цвета overlay.", "Color settings apply immediately. All overlay colors are collected here."), 14, MUTED, Typeface.NORMAL, Gravity.CENTER), matchWrap());
+        outer.addView(tv(tr(R.string.ColorDialog_Title), 24, TEXT, Typeface.BOLD, Gravity.CENTER), matchWrap());
+        outer.addView(tv(tr(R.string.ColorDialog_Description), 14, MUTED, Typeface.NORMAL, Gravity.CENTER), matchWrap());
         space(outer, 12);
 
         ScrollView sv = new ScrollView(this);
@@ -428,14 +434,14 @@ public class MainActivity extends Activity {
         sv.addView(box, new ScrollView.LayoutParams(-1, -2));
         outer.addView(sv, new LinearLayout.LayoutParams(-1, 0, 1));
 
-        box.addView(menuButton(tr("Выбор цвета окна", "Window color"), tr("Палитра фона окна", "Background palette"), v -> showColorDialog(0)), smallGapLp());
-        box.addView(menuButton(tr("Цвет рамки окна", "Window border color"), tr("Палитра для контура overlay", "Overlay border palette"), v -> showBorderColorDialog(false)), smallGapLp());
-        box.addView(menuButton(tr("Цвет рамок кнопок", "Control border color"), tr("Палитра для кнопок ⏮ ⏯ ⏭", "Palette for ⏮ ⏯ ⏭ buttons"), v -> showBorderColorDialog(true)), smallGapLp());
-        box.addView(menuButton(tr("Цвет исполнителя", "Artist color"), tr("Отдельный цвет для исполнителя", "Separate color for artist text"), v -> showColorDialog(1)), smallGapLp());
-        box.addView(menuButton(tr("Цвет названия песни", "Track title color"), tr("Отдельный цвет для названия песни", "Separate color for song title"), v -> showColorDialog(2)), smallGapLp());
-        box.addView(previewButton(tr("Проверить окно", "Preview window"), v -> TrackOverlayManager.test(this)), btnLp());
+        box.addView(menuButton(tr(R.string.ColorDialog_Window_Title), tr(R.string.ColorDialog_Window_Description), v -> showColorDialog(0)), smallGapLp());
+        box.addView(menuButton(tr(R.string.ColorDialog_Border_Title), tr(R.string.ColorDialog_Border_Description), v -> showBorderColorDialog(false)), smallGapLp());
+        box.addView(menuButton(tr(R.string.ColorDialog_Controls_Title), tr(R.string.ColorDialog_Controls_Description), v -> showBorderColorDialog(true)), smallGapLp());
+        box.addView(menuButton(tr(R.string.ColorDialog_Artist_Title), tr(R.string.ColorDialog_Artist_Description), v -> showColorDialog(1)), smallGapLp());
+        box.addView(menuButton(tr(R.string.ColorDialog_Track_Title), tr(R.string.ColorDialog_Track_Description), v -> showColorDialog(2)), smallGapLp());
+        box.addView(previewButton(tr(R.string.ColorDialog_Preview), v -> TrackOverlayManager.test(this)), btnLp());
 
-        outer.addView(secondaryButton(tr("Готово", "Done"), v -> dialog.dismiss()), btnLp());
+        outer.addView(secondaryButton(tr(R.string.ColorDialog_Done), v -> dialog.dismiss()), btnLp());
         dialog.show();
         fitDialog(dialog, true);
     }
@@ -445,8 +451,8 @@ public class MainActivity extends Activity {
         LinearLayout outer = dialogRoot();
         dialog.setContentView(outer);
 
-        outer.addView(tv(tr("Дополнительные функции", "Extra features"), 24, TEXT, Typeface.BOLD, Gravity.CENTER), matchWrap());
-        outer.addView(tv(tr("Включай только то, что реально нужно. Все функции применяются сразу.", "Enable only what you really need. Changes apply immediately."), 14, MUTED, Typeface.NORMAL, Gravity.CENTER), matchWrap());
+        outer.addView(tv(tr(R.string.ExtraDialog_Title), 24, TEXT, Typeface.BOLD, Gravity.CENTER), matchWrap());
+        outer.addView(tv(tr(R.string.ExtraDialog_Description), 14, MUTED, Typeface.NORMAL, Gravity.CENTER), matchWrap());
         space(outer, 12);
 
         ScrollView sv = new ScrollView(this);
@@ -457,28 +463,28 @@ public class MainActivity extends Activity {
         sv.addView(box, new ScrollView.LayoutParams(-1, -2));
         outer.addView(sv, new LinearLayout.LayoutParams(-1, 0, 1));
 
-        switchRow(box, tr("Кнопки управления музыкой в overlay", "Media control buttons in overlay"), prefs.featureControls(), on -> { prefs.setFeatureControls(on); TrackOverlayManager.refresh(this); });
-        switchRow(box, tr("Свайп по overlay: влево/вправо переключает треки", "Swipe on overlay: left/right switches tracks"), prefs.featureSwipeTracks(), on -> prefs.setFeatureSwipeTracks(on));
-        switchRow(box, tr("Snap: магнит к краям и центру после перетаскивания", "Snap: magnet to edges and center after dragging"), prefs.featureSnap(), on -> prefs.setFeatureSnap(on));
-        switchRow(box, tr("При изменении громкости временно приглушать окно", "Temporarily dim the window on volume change"), prefs.featureVolumeDim(), on -> prefs.setFeatureVolumeDim(on));
-        switchRow(box, tr("Floating режим: показывать трек даже без навигатора", "Floating mode: show the track even without navigation"), prefs.featureFloating(), on -> prefs.setFeatureFloating(on));
-        switchRow(box, tr("Показывать обложку в окне", "Show album art in the window"), prefs.featureAlbumArt(), on -> { prefs.setFeatureAlbumArt(on); TrackOverlayManager.refresh(this); });
-        switchRow(box, tr("Сворачивать окно вместе с навигацией", "Hide the window together with navigation"), prefs.featureHideWithNavigation(), on -> prefs.setFeatureHideWithNavigation(on));
-        switchRow(box, tr("Фиксированный размер окна", "Fixed window size"), prefs.featureFixedWindow(), on -> {
+        switchRow(box, tr(R.string.ExtraDialog_Controls), prefs.featureControls(), on -> { prefs.setFeatureControls(on); TrackOverlayManager.refresh(this); });
+        switchRow(box, tr(R.string.ExtraDialog_SwipeTracks), prefs.featureSwipeTracks(), on -> prefs.setFeatureSwipeTracks(on));
+        switchRow(box, tr(R.string.ExtraDialog_Snap), prefs.featureSnap(), on -> prefs.setFeatureSnap(on));
+        switchRow(box, tr(R.string.ExtraDialog_VolumeDim), prefs.featureVolumeDim(), on -> prefs.setFeatureVolumeDim(on));
+        switchRow(box, tr(R.string.ExtraDialog_Floating), prefs.featureFloating(), on -> prefs.setFeatureFloating(on));
+        switchRow(box, tr(R.string.ExtraDialog_AlbumArt), prefs.featureAlbumArt(), on -> { prefs.setFeatureAlbumArt(on); TrackOverlayManager.refresh(this); });
+        switchRow(box, tr(R.string.ExtraDialog_HideWithNav), prefs.featureHideWithNavigation(), on -> prefs.setFeatureHideWithNavigation(on));
+        switchRow(box, tr(R.string.ExtraDialog_FixedWindow), prefs.featureFixedWindow(), on -> {
             prefs.setFeatureFixedWindow(on);
             TrackOverlayManager.refresh(this);
         });
-        TextView fixedHint = tv(tr("Ширину окна можно зафиксировать и потом менять двумя пальцами, как при увеличении или уменьшении изображения.", "You can lock the window width and then resize it with two fingers, like zooming an image."), 12, MUTED_2, Typeface.NORMAL, Gravity.START);
+        TextView fixedHint = tv(tr(R.string.ExtraDialog_FixedWindow_Hint), 12, MUTED_2, Typeface.NORMAL, Gravity.START);
         LinearLayout.LayoutParams fixedHintLp = matchWrap();
         fixedHintLp.setMargins(Ui.dp(this, 8), Ui.dp(this, 2), Ui.dp(this, 8), 0);
         box.addView(fixedHint, fixedHintLp);
-        switchRow(box, tr("Показывать окно постоянно", "Show window continuously"), prefs.displayWhilePlaying(), on -> {
+        switchRow(box, tr(R.string.ExtraDialog_AlwaysShow), prefs.displayWhilePlaying(), on -> {
             prefs.setDisplayWhilePlaying(on);
             TrackOverlayManager.refresh(this);
         });
-        box.addView(previewButton(tr("Проверить окно", "Preview window"), v -> TrackOverlayManager.test(this)), btnLp());
+        box.addView(previewButton(tr(R.string.ExtraDialog_Preview), v -> TrackOverlayManager.test(this)), btnLp());
 
-        outer.addView(secondaryButton(tr("Готово", "Done"), v -> dialog.dismiss()), btnLp());
+        outer.addView(secondaryButton(tr(R.string.ExtraDialog_Done), v -> dialog.dismiss()), btnLp());
         dialog.show();
         fitDialog(dialog, true);
     }
@@ -507,7 +513,7 @@ public class MainActivity extends Activity {
         LinearLayout box = dialogRoot();
         dialog.setContentView(box);
         box.addView(tv(colorTargetTitle(target), 24, TEXT, Typeface.BOLD, Gravity.CENTER), matchWrap());
-        box.addView(tv(tr("Нажми на цвет — тестовое окно обновится сразу.", "Tap a color — the test window updates immediately."), 14, MUTED, Typeface.NORMAL, Gravity.CENTER), matchWrap());
+        box.addView(tv(tr(R.string.ColorPickerDialog_Description), 14, MUTED, Typeface.NORMAL, Gravity.CENTER), matchWrap());
         space(box, 12);
 
         GridLayout grid = new GridLayout(this);
@@ -536,15 +542,15 @@ public class MainActivity extends Activity {
             });
         }
         box.addView(grid, matchWrap());
-        box.addView(primaryButton(tr("Готово", "Done"), v -> dialog.dismiss()), btnLp());
+        box.addView(primaryButton(tr(R.string.ColorPickerDialog_Done), v -> dialog.dismiss()), btnLp());
         dialog.show();
         fitDialog(dialog, false);
     }
 
     private String colorTargetTitle(int target) {
-        if (target == 1) return tr("Цвет исполнителя", "Artist color");
-        if (target == 2) return tr("Цвет названия песни", "Track title color");
-        return tr("Выбор цвета окна", "Window color");
+        if (target == 1) return tr(R.string.ColorTargetTitle_Artist);
+        if (target == 2) return tr(R.string.ColorTargetTitle_Title);
+        return tr(R.string.ColorTargetTitle_Window);
     }
 
     private int[] textPalette() {
@@ -565,8 +571,8 @@ public class MainActivity extends Activity {
         final Dialog dialog = fullDialog();
         LinearLayout box = dialogRoot();
         dialog.setContentView(box);
-        box.addView(tv(controls ? tr("Цвет рамок кнопок", "Control border color") : tr("Цвет рамки окна", "Window border color"), 24, TEXT, Typeface.BOLD, Gravity.CENTER), matchWrap());
-        box.addView(tv(controls ? tr("Выбери цвет контура кнопок управления. Изменение видно сразу.", "Pick a border color for control buttons. Changes apply immediately.") : tr("Выбери цвет контура. Изменение видно сразу на тестовом окне.", "Pick a border color. The preview updates immediately."), 14, MUTED, Typeface.NORMAL, Gravity.CENTER), matchWrap());
+        box.addView(tv(controls ? tr(R.string.BorderColorDialog_Controls_Title) : tr(R.string.BorderColorDialog_Window_Title), 24, TEXT, Typeface.BOLD, Gravity.CENTER), matchWrap());
+        box.addView(tv(controls ? tr(R.string.BorderColorDialog_Controls_Description) : tr(R.string.BorderColorDialog_Window_Description), 14, MUTED, Typeface.NORMAL, Gravity.CENTER), matchWrap());
         space(box, 12);
 
         GridLayout grid = new GridLayout(this);
@@ -592,7 +598,7 @@ public class MainActivity extends Activity {
             });
         }
         box.addView(grid, matchWrap());
-        box.addView(primaryButton(tr("Готово", "Done"), v -> dialog.dismiss()), btnLp());
+        box.addView(primaryButton(tr(R.string.BorderColorDialog_Done), v -> dialog.dismiss()), btnLp());
         dialog.show();
         fitDialog(dialog, false);
     }
@@ -610,8 +616,8 @@ public class MainActivity extends Activity {
         final Dialog dialog = fullDialog();
         LinearLayout outer = dialogRoot();
         dialog.setContentView(outer);
-        outer.addView(tv(tr("Шрифт окна", "Window font"), 24, TEXT, Typeface.BOLD, Gravity.CENTER), matchWrap());
-        outer.addView(tv(tr("Выбери шрифт по образцу. Изменение применяется сразу к overlay.", "Choose a font by sample. Changes apply to the overlay immediately."), 14, MUTED, Typeface.NORMAL, Gravity.CENTER), matchWrap());
+        outer.addView(tv(tr(R.string.FontDialog_Title), 24, TEXT, Typeface.BOLD, Gravity.CENTER), matchWrap());
+        outer.addView(tv(tr(R.string.FontDialog_Description), 14, MUTED, Typeface.NORMAL, Gravity.CENTER), matchWrap());
         space(outer, 12);
 
         ScrollView sv = new ScrollView(this);
@@ -634,10 +640,10 @@ public class MainActivity extends Activity {
             Ui.pad(row, 16, 14, 16, 14);
 
             TextView name = tv(OverlayFonts.nameAt(fontIndex), 16, fontIndex == prefs.textFont() ? prefs.accentColor() : TEXT, Typeface.BOLD, Gravity.START);
-            TextView sample = tv(tr("Пример / Example — АБВ abc", "Example / Пример — ABC абв"), 18, TEXT, Typeface.NORMAL, Gravity.START);
+            TextView sample = tv(tr(R.string.FontDialog_Sample), 18, TEXT, Typeface.NORMAL, Gravity.START);
             sample.setTypeface(OverlayFonts.resolve(this, fontIndex, prefs.textBold()));
             sample.getPaint().setFakeBoldText(prefs.textBold());
-            TextView hint = tv(fontIndex == 0 ? tr("Системный шрифт Android", "Android system font") : tr("Образец для overlay", "Overlay sample"), 12, MUTED_2, Typeface.NORMAL, Gravity.START);
+            TextView hint = tv(fontIndex == 0 ? tr(R.string.FontDialog_Hint_System) : tr(R.string.FontDialog_Hint_Sample), 12, MUTED_2, Typeface.NORMAL, Gravity.START);
 
             row.addView(name, matchWrap());
             row.addView(sample, matchWrap());
@@ -658,13 +664,13 @@ public class MainActivity extends Activity {
                     samples.get(j).setTypeface(OverlayFonts.resolve(this, j, prefs.textBold()));
                     samples.get(j).getPaint().setFakeBoldText(prefs.textBold());
                     hints.get(j).setText(selected
-                            ? tr("Выбранный шрифт overlay", "Selected overlay font")
-                            : (j == 0 ? tr("Системный шрифт Android", "Android system font") : tr("Образец для overlay", "Overlay sample")));
+                            ? tr(R.string.FontDialog_Hint_Selected)
+                            : (j == 0 ? tr(R.string.FontDialog_Hint_System) : tr(R.string.FontDialog_Hint_Sample)));
                 }
             });
         }
 
-        outer.addView(primaryButton(tr("Готово", "Done"), v -> dialog.dismiss()), btnLp());
+        outer.addView(primaryButton(tr(R.string.FontDialog_Done), v -> dialog.dismiss()), btnLp());
         dialog.show();
         fitDialog(dialog, true);
     }
@@ -673,8 +679,8 @@ public class MainActivity extends Activity {
         final Dialog dialog = fullDialog();
         LinearLayout outer = dialogRoot();
         dialog.setContentView(outer);
-        outer.addView(tv(tr("Положение окна", "Window position"), 24, TEXT, Typeface.BOLD, Gravity.CENTER), matchWrap());
-        outer.addView(tv(tr("Выбери стандартное положение окна. Изменение применяется сразу.", "Choose a standard window position. Changes apply immediately."), 14, MUTED, Typeface.NORMAL, Gravity.CENTER), matchWrap());
+        outer.addView(tv(tr(R.string.PositionDialog_Title), 24, TEXT, Typeface.BOLD, Gravity.CENTER), matchWrap());
+        outer.addView(tv(tr(R.string.PositionDialog_Description), 14, MUTED, Typeface.NORMAL, Gravity.CENTER), matchWrap());
         space(outer, 12);
 
         ScrollView sv = new ScrollView(this);
@@ -685,13 +691,13 @@ public class MainActivity extends Activity {
         outer.addView(sv, new LinearLayout.LayoutParams(-1, 0, 1));
 
         String[] labels = new String[]{
-                tr("Верх слева", "Top left"),
-                tr("Верх по центру", "Top center"),
-                tr("Верх справа", "Top right"),
-                tr("Центр", "Center"),
-                tr("Низ слева", "Bottom left"),
-                tr("Низ по центру", "Bottom center"),
-                tr("Низ справа", "Bottom right")
+                tr(R.string.PositionDialog_TopLeft),
+                tr(R.string.PositionDialog_TopCenter),
+                tr(R.string.PositionDialog_TopRight),
+                tr(R.string.PositionDialog_Center),
+                tr(R.string.PositionDialog_BottomLeft),
+                tr(R.string.PositionDialog_BottomCenter),
+                tr(R.string.PositionDialog_BottomRight)
         };
         ArrayList<RadioButton> radios = new ArrayList<>();
         int selected = prefs.position();
@@ -715,8 +721,8 @@ public class MainActivity extends Activity {
             box.addView(rb, smallGapLp());
         }
 
-        box.addView(previewButton(tr("Проверить окно", "Preview window"), v -> TrackOverlayManager.test(this)), btnLp());
-        outer.addView(secondaryButton(tr("Готово", "Done"), v -> dialog.dismiss()), btnLp());
+        box.addView(previewButton(tr(R.string.PositionDialog_Preview), v -> TrackOverlayManager.test(this)), btnLp());
+        outer.addView(secondaryButton(tr(R.string.PositionDialog_Done), v -> dialog.dismiss()), btnLp());
         dialog.show();
         fitDialog(dialog, true);
     }
@@ -725,8 +731,8 @@ public class MainActivity extends Activity {
         final Dialog dialog = fullDialog();
         LinearLayout outer = dialogRoot();
         dialog.setContentView(outer);
-        outer.addView(tv(tr("Пресет дизайна", "Design preset"), 24, TEXT, Typeface.BOLD, Gravity.CENTER), matchWrap());
-        outer.addView(tv(tr("Выбери готовый стиль формы и оформления overlay. Изменение применяется сразу.", "Choose a ready-made overlay shape and style. Changes apply immediately."), 14, MUTED, Typeface.NORMAL, Gravity.CENTER), matchWrap());
+        outer.addView(tv(tr(R.string.DesignPresetDialog_Title), 24, TEXT, Typeface.BOLD, Gravity.CENTER), matchWrap());
+        outer.addView(tv(tr(R.string.DesignPresetDialog_Description), 14, MUTED, Typeface.NORMAL, Gravity.CENTER), matchWrap());
         space(outer, 12);
 
         ScrollView sv = new ScrollView(this);
@@ -737,16 +743,16 @@ public class MainActivity extends Activity {
         outer.addView(sv, new LinearLayout.LayoutParams(-1, 0, 1));
 
         String[] names = new String[]{
-                tr("Classic — как сейчас", "Classic — current look"),
-                tr("Minimal — тонкая тёмная плашка", "Minimal — slim dark plate"),
-                tr("Glass — плавные волны", "Glass — soft waves"),
-                tr("Car UI — авто-стиль", "Car UI — automotive style"),
-                tr("Soft — мягкая карточка", "Soft — soft card"),
-                tr("Contrast — контрастный стиль", "Contrast — contrast style"),
-                tr("Capsule — капсульная форма", "Capsule — capsule shape"),
-                tr("Premium — плотный тёмный стиль", "Premium — dense dark style"),
-                tr("Spikes — шипы", "Spikes — spikes"),
-                tr("Orbit — круглый стиль", "Orbit — round style")
+                tr(R.string.DesignPresetDialog_Classic),
+                tr(R.string.DesignPresetDialog_Minimal),
+                tr(R.string.DesignPresetDialog_Glass),
+                tr(R.string.DesignPresetDialog_CarUI),
+                tr(R.string.DesignPresetDialog_Soft),
+                tr(R.string.DesignPresetDialog_Contrast),
+                tr(R.string.DesignPresetDialog_Capsule),
+                tr(R.string.DesignPresetDialog_Premium),
+                tr(R.string.DesignPresetDialog_Spikes),
+                tr(R.string.DesignPresetDialog_Orbit)
         };
         ArrayList<RadioButton> radios = new ArrayList<>();
         int selected = prefs.designPreset();
@@ -770,8 +776,8 @@ public class MainActivity extends Activity {
             box.addView(rb, smallGapLp());
         }
 
-        box.addView(previewButton(tr("Проверить окно", "Preview window"), v -> TrackOverlayManager.test(this)), btnLp());
-        outer.addView(secondaryButton(tr("Готово", "Done"), v -> dialog.dismiss()), btnLp());
+        box.addView(previewButton(tr(R.string.DesignPresetDialog_Preview), v -> TrackOverlayManager.test(this)), btnLp());
+        outer.addView(secondaryButton(tr(R.string.DesignPresetDialog_Done), v -> dialog.dismiss()), btnLp());
         dialog.show();
         fitDialog(dialog, true);
     }
@@ -819,7 +825,7 @@ public class MainActivity extends Activity {
         } catch (Throwable t) { sb.append("musicStateError=").append(t.getClass().getSimpleName()).append("\n"); }
         ClipboardManager cm = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
         if (cm != null) cm.setPrimaryClip(ClipData.newPlainText("Navi Overlay diagnostics", sb.toString()));
-        Toast.makeText(this, tr("Диагностика скопирована", "Diagnostics copied"), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, tr(R.string.Diagnostics_Copied), Toast.LENGTH_SHORT).show();
     }
 
     private long ageSeconds(long ts) {
@@ -850,12 +856,12 @@ public class MainActivity extends Activity {
         boolean musicOk = track != null && track.playing && track.hasText();
 
         SpannableStringBuilder sb = new SpannableStringBuilder();
-        appendStatusLine(sb, tr("Статус: ", "Status: "), enabled ? tr("Включено", "Enabled") : tr("Выключено", "Disabled"), enabled);
-        appendStatusLine(sb, tr("Разрешения: ", "Permissions: "), allPerms ? tr("Выданы", "Granted") : tr("Выданы не все", "Not all granted"), allPerms);
-        appendStatusLine(sb, tr("Навигатор: ", "Navigator: "), navOk ? tr("Запущен", "Running") : tr("Нет", "No"), navOk);
-        appendStatusLine(sb, tr("Музыка: ", "Music: "), musicOk ? tr("Запущена", "Running") : tr("Нет", "No"), musicOk);
+        appendStatusLine(sb, tr(R.string.Status_Label_Status), enabled ? tr(R.string.Status_Enabled) : tr(R.string.Status_Disabled), enabled);
+        appendStatusLine(sb, tr(R.string.Status_Label_Permissions), allPerms ? tr(R.string.Status_Permissions_Granted) : tr(R.string.Status_Permissions_NotAll), allPerms);
+        appendStatusLine(sb, tr(R.string.Status_Label_Navigator), navOk ? tr(R.string.Status_Running) : tr(R.string.Status_No), navOk);
+        appendStatusLine(sb, tr(R.string.Status_Label_Music), musicOk ? tr(R.string.Status_Running) : tr(R.string.Status_No), musicOk);
         if (enabled && acc && !accConnected) {
-            appendStatusLine(sb, tr("Сервис спец. возможностей: ", "Accessibility service: "), tr("Нет связи", "No connection"), false);
+            appendStatusLine(sb, tr(R.string.Status_Label_AccessibilityService), tr(R.string.Status_NoConnection), false);
         }
         statusView.setText(sb);
         statusView.setTextColor(TEXT);
@@ -866,7 +872,7 @@ public class MainActivity extends Activity {
 
     private void checkAndRecover() {
         if (!prefs.enabled()) {
-            Toast.makeText(this, tr("Сначала включи приложение", "Enable the app first"), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, tr(R.string.Recover_EnableFirst), Toast.LENGTH_SHORT).show();
             return;
         }
         if (!TrackOverlayManager.canDraw(this)) {
@@ -878,23 +884,23 @@ public class MainActivity extends Activity {
             return;
         }
         if (!ForegroundDetector.isAccessibilityEnabled(this)) {
-            Toast.makeText(this, tr("Спец. возможности выключены. Открой и снова включи Navi Overlay.", "Accessibility is off. Open settings and enable Navi Overlay again."), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, tr(R.string.Recover_AccessibilityOff), Toast.LENGTH_LONG).show();
             startActivity(new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS));
             return;
         }
         if (prefs.showOnlyWithTrigger() && !ForegroundDetector.hasUsageAccess(this)) {
-            Toast.makeText(this, tr("Нужен доступ к истории использования.", "Usage access is required."), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, tr(R.string.Recover_UsageAccessRequired), Toast.LENGTH_LONG).show();
             startActivity(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS));
             return;
         }
         if (!NavigatorAccessibilityService.isServiceConnected()) {
-            Toast.makeText(this, tr("Служба спец. возможностей включена, но не отвечает. Открой этот экран и переподключи Navi Overlay.", "Accessibility is enabled but not responding. Open the screen and reconnect Navi Overlay."), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, tr(R.string.Recover_AccessibilityNotResponding), Toast.LENGTH_LONG).show();
             startActivity(new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS));
             return;
         }
         MonitorService.poke(this);
         refreshStatus();
-        Toast.makeText(this, tr("Движок перепроверен. Критичных проблем не найдено.", "Engine rechecked. No critical problems found."), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, tr(R.string.Recover_NoProblems), Toast.LENGTH_SHORT).show();
     }
 
     private void appendStatusLine(SpannableStringBuilder sb, String label, String value, boolean ok) {
@@ -915,7 +921,7 @@ public class MainActivity extends Activity {
     private void openPostNotificationsFlow() {
         try {
             if (Build.VERSION.SDK_INT < 33) {
-                Toast.makeText(this, tr("На Android 12 и ниже отдельное разрешение уведомлений не требуется", "On Android 12 and below a separate notification permission is not required"), Toast.LENGTH_LONG).show();
+                Toast.makeText(this, tr(R.string.PostNotif_NotRequired), Toast.LENGTH_LONG).show();
                 return;
             }
             if (checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
@@ -930,7 +936,7 @@ public class MainActivity extends Activity {
                 Intent i = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + getPackageName()));
                 startActivity(i);
             } catch (Throwable ignored) {
-                Toast.makeText(this, tr("Не удалось открыть настройки уведомлений", "Failed to open notification settings"), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, tr(R.string.PostNotif_OpenFailed), Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -1111,7 +1117,5 @@ public class MainActivity extends Activity {
     private LinearLayout.LayoutParams quickButtonLp(float weight) { LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(0, Ui.dp(this, 64), weight); lp.setMargins(Ui.dp(this, 4), Ui.dp(this, 8), Ui.dp(this, 4), Ui.dp(this, 10)); return lp; }
     private void space(LinearLayout parent, int dp) { Space s = new Space(this); parent.addView(s, new LinearLayout.LayoutParams(1, Ui.dp(this, dp))); }
 
-    private String tr(String ru, String en) {
-        return prefs != null && prefs.englishUi() ? en : ru;
-    }
+    private String tr(int traductionKey) {return getString(traductionKey);}
 }
